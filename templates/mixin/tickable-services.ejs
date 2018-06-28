@@ -1,0 +1,11 @@
+
+
+<p>
+
+<% for(let service of app.services) { %>
+
+    <input type="checkbox" name="services[]" value=<%= service.name %>><%= service.name %></input>
+    <br />
+
+<% } %>
+</p>

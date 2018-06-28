@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {
+		"outDir": "./dist/",
+		"target": "es2015",
+		"lib": [ "es2015" ],
+		"sourceMap": true,
+		"baseUrl": ".",
+		"alwaysStrict": true,
+		"strictNullChecks": true,
+		"module": "commonjs",
+		"paths": {
+		}
+	},
+	"exclude": [
+		"node_modules",
+		"dist"
+	]
+}

@@ -1,0 +1,33 @@
+
+<% 
+
+function activeIfPage(p) {
+	return page === p ? ' active ' : ' inactive '
+}
+
+%>
+
+<html>
+
+<head>
+<link rel="stylesheet" type="text/css" href="css/fontawesome-all.min.css" />
+<link rel="stylesheet" type="text/css" href="styles.css" />
+</head>
+
+
+<body>
+	<h1 class="title"><span style="color: red;">enrichment</span>&nbsp;cerebrum</h1>
+
+	<div class="container">
+		<div class="sidebar">
+			<ul class="nav">
+				<% for(let item of menu.items) { %>
+					<li class="<%- activeIfPage(item.id) %>"><a href="<%- item.url %>"><span class="fas <%- item.faIconClass %>"></span>&nbsp;<%= item.title %></a></li>
+				<% } %>
+			</ul>
+		</div>
+
+		<div class="main">
+
+
+

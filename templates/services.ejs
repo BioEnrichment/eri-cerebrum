@@ -1,0 +1,25 @@
+
+<% 
+    page = 'services'
+%>
+
+<%- include('./include/header') -%>
+
+<% for(let service of app.services) { %>
+
+    <div class="cr-services-service">
+        <span class="cr-services-service-icon fas fa-share-alt"></span>
+        <h3><%= service.name %></h3>
+        <div><%= service.url %></div>
+
+        <div class="cr-services-service-inner">
+                <button>SPARQL</button>
+            </p>
+        </div>
+    </div>
+
+<% } %>
+
+
+<%- include('./include/footer') -%>
+

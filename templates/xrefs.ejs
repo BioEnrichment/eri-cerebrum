@@ -1,0 +1,18 @@
+
+<% 
+    page = 'xrefs'
+%>
+
+<%- include('./include/header') -%>
+
+<table>
+    <% for(let entry of counts) { %>
+        <tr>
+            <td><%= entry.type %></td>
+            <td><%= entry.count %></td>
+        </tr>
+    <% } %>
+</table>
+
+<%- include('./include/footer') -%>
+

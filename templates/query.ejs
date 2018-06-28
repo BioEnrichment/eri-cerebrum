@@ -1,0 +1,65 @@
+
+<% 
+    page = 'query'
+%>
+
+<%- include('./include/header') -%>
+
+
+
+<form action="query" method="POST">
+
+<div>
+    <label>Services
+    <%- include('./mixin/tickable-services') -%>
+    </label>
+</div>
+
+<br />
+
+<div>
+<textarea name="sparql">
+PREFIX sybiont: &lt;http://sybiont.org/&gt;
+PREFIX prov: &lt;http://www.w3.org/ns/prov#&gt;
+
+SELECT ?s WHERE {
+    ?s prov:wasDerivedFrom &lt;http://uniprot.org/uniprot/Q12068&gt; .
+}
+</textarea>
+</div>
+
+<br />
+
+<button>Go</button>
+
+<% if(typeof(errors) !== 'undefined') { %>
+    errors <%= JSON.stringify(errors) %>
+<% } %>
+
+<% if(typeof(result) !== 'undefined') { %>
+    result <%= JSON.stringify(result) %>
+<% } %>
+
+
+</form>
+
+<script src="codemirror/lib/codemirror.js"></script>
+<link rel="stylesheet" href="codemirror/lib/codemirror.css">
+<link rel="stylesheet" href="codemirror/theme/monokai.css">
+<script src="codemirror/mode/sparql/sparql.js"></script>
+
+<script type="text/javascript">
+
+var codeMirror = CodeMirror.fromTextArea(document.getElementsByName('sparql')[0], {
+    lineNumbers: true,
+    autofocus: true,
+    theme: 'monokai'
+})
+
+codeMirror.setSize(800, null)
+codeMirror.execCommand('goDocEnd')
+
+</script>
+
+<%- include('./include/footer') -%>
+
