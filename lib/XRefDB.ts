@@ -51,16 +51,17 @@ export default class XRefDB {
 	}
 
 	async getCounts() {
-
-		let types = Object.keys(tables)
-
-		let counts = await Promise.all(types.map((type) => {
-			return this.db.any('SELECT COUNT(1) as count FROM ' + this.typeToTable(type))
-		}))
-
+		
+		const queries = [];
+		for(const a in tables) {
+			queries.push({query: 'SELECT count(*) FROM $1:name', values: tables[a]});
+		}
+		
+		const counts = await this.db.multi(pgp.helpers.concat(queries));
+		
 		return types.map((type, i) => {
-			return { type: type, count: counts[i][0].count }
-		})
+			return { type, count: counts[i][0].count };
+		});
 	}
 
 	private crackQualifiedERI(eri) {
