@@ -18,7 +18,7 @@ export default class Service {
 
 
         try {
-            request({
+            await request({
                 method: 'GET',
                 url: this.url
             })

@@ -10,8 +10,6 @@ var pgpOpts = {}
 monitor.attach(pgpOpts)
 const pgp = require('pg-promise')(pgpOpts)
 
-console.log('fuckaklsjlash')
-
 const prefix = 'http://enrichment.ncl.ac.uk/'
 
 
