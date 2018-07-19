@@ -5,7 +5,9 @@ import ldf = require('ldf-client')
 
 export default async function query(services:Service[], sparql:string):Promise<any> {
 
-    let fragmentsClient = new ldf.FragmentsClient(services.map((service) => service.url + '/query'))
+    console.log('Services ' + services)
+
+    let fragmentsClient = new ldf.FragmentsClient(services.map((service) => service.url))
 
     const results = new ldf.SparqlIterator(sparql, { fragmentsClient: fragmentsClient });
 
