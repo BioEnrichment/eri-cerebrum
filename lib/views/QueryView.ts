@@ -11,6 +11,7 @@ import query from '../query';
 
 export default class QueryView extends View {
 
+    sparql:string
     errors:string[]
     result:string|null
 
@@ -20,6 +21,14 @@ export default class QueryView extends View {
 
         this.result = null
         this.errors = []
+
+        this.sparql = `PREFIX sybiont: <http://sybiont.org/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+
+SELECT ?s ?p ?o WHERE {
+    ?s prov:wasDerivedFrom <http://www.uniprot.org/uniprot/Q12068> .
+    ?s ?p ?o.
+}`
     }
 
     async prepare(req:Request) {
@@ -27,6 +36,7 @@ export default class QueryView extends View {
         await super.prepare(req)
 
         if(req.method === 'POST') {
+            this.sparql = req.body.sparql
             await this.doQuery(req)
         }
 
@@ -60,9 +70,7 @@ export default class QueryView extends View {
 
         })
 
-        let sparql = req.body.sparql
-
-        if(!sparql) {
+        if(!this.sparql) {
             this.errors.push('I need a query')
             return
         }
@@ -70,7 +78,7 @@ export default class QueryView extends View {
         var result
 
         try {
-            result = await query(services, sparql)
+            result = await query(services, this.sparql)
         } catch(e) {
             this.errors.push(e.toString())
         }

@@ -12,8 +12,15 @@ export default async function query(services:Service[], sparql:string):Promise<a
     const results = new ldf.SparqlIterator(sparql, { fragmentsClient: fragmentsClient });
 
     return await new Promise<any>((resolve, reject) => {
+        let r:any[] = []
         results.on('data', (result) => {
-            resolve(result)
+            r.push(result)
+        })
+        results.on('end', () => {
+            resolve(r)
+        })
+        results.on('error', (err) => {
+            reject(err)
         })
     })
 

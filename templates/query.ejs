@@ -18,14 +18,7 @@
 <br />
 
 <div>
-<textarea name="sparql">
-PREFIX sybiont: &lt;http://sybiont.org/&gt;
-PREFIX prov: &lt;http://www.w3.org/ns/prov#&gt;
-
-SELECT ?s WHERE {
-    ?s prov:wasDerivedFrom &lt;http://www.uniprot.org/uniprot/Q12068&gt; .
-}
-</textarea>
+<textarea name="sparql"><%= sparql %></textarea>
 </div>
 
 <br />
@@ -36,8 +29,27 @@ SELECT ?s WHERE {
     errors <%= JSON.stringify(errors) %>
 <% } %>
 
-<% if(typeof(result) !== 'undefined') { %>
-    result <%= JSON.stringify(result) %>
+<% if(typeof(result) !== 'undefined' && result) { %>
+    <% if(!result.length) { %>
+        result <%= JSON.stringify(result) %>
+    <% } else { %>
+        <table class="cr-results">
+            <thead>
+            <% for(let binding in result[0]) { %>
+                <th><%= binding %></th>
+            <% } %>
+            </thead>
+            <tbody>
+            <% for(let r of result) { %>
+            <tr>
+                <% for(let binding in result[0]) { %>
+                <td><%= r[binding] %></td>
+                <% } %>
+            </tr>
+            <% } %>
+            </tbody>
+        </table>
+    <% } %>
 <% } %>
 
 
