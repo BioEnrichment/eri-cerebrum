@@ -20,7 +20,7 @@
     "ejs": "^2.5.7",
     "esm": "^3.0.71",
     "express": "^4.16.2",
-    "ldf-client": "git+https://github.com/udp/ldf-client.git",
+    "@bioenrichment/ldf-client": "^0.1.1",
     "less": "^2.7.3",
     "mz": "^2.7.0",
     "pg-monitor": "^1.0.0",

@@ -1,7 +1,7 @@
 
 import Service from './Service'
 
-import ldf = require('ldf-client')
+import ldf = require('@bioenrichment/ldf-client')
 
 export default async function query(services:Service[], sparql:string):Promise<any> {
 

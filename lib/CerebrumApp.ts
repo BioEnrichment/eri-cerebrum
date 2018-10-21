@@ -7,6 +7,8 @@ import Service from './Service'
 
 import XRefDB from './XRefDB'
 
+import { Logger } from '@bioenrichment/ldf-client'
+
 export default class CerebrumApp {
 
     webApp:Express
@@ -19,9 +21,13 @@ export default class CerebrumApp {
 
     xrefs:XRefDB
 
+    config:any
+
 
 
     constructor() {
+
+        Logger.setLevel('debug')
 
         this.webApp = CerebrumWebApp(this)
 
@@ -30,8 +36,6 @@ export default class CerebrumApp {
 
     async init():Promise<string> {
 
-        this.xrefs = new XRefDB(this)
-        
         const configFilename:string|undefined = process.env['ENRICHMENT_CONFIG']
 
         if(configFilename === undefined) {
@@ -40,6 +44,13 @@ export default class CerebrumApp {
 
         const configJson = await fs.readFileSync(configFilename)
         const config:any = JSON.parse(configJson.toString())
+
+        this.config = config
+
+
+        this.xrefs = new XRefDB(this)
+        await this.xrefs.init()
+        
 
         this.port = config.cerebrum.port
 

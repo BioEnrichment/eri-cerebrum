@@ -38,15 +38,23 @@ export default class XRefDB {
 
 		this.app = app
 
-		this.db = pgp({
-			host: 'localhost',
-			port: 5432,
-			database: 'xrefdb',
-			user: 'postgres',
-			password: 'postgres'
-		})
+        let config = (app as any).config
 
+		this.db = pgp(config.cerebrum.db)
 	}
+
+    async init() {
+
+        await Promise.all(Object.keys(tables).map((name) => {
+
+            let tableName = tables[name]
+
+            return this.db.any('CREATE TABLE IF NOT EXISTS ' + tableName + ' (uri text primary key, eri text)')
+
+        }))
+
+
+    }
 
 	async getCounts() {
 

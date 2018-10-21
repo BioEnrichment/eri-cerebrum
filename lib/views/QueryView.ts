@@ -6,7 +6,7 @@ import Service from 'lib/Service';
 
 import View from './View'
 
-import ldf = require('ldf-client')
+import ldf = require('@bioenrichment/ldf-client')
 import query from '../query';
 
 export default class QueryView extends View {
@@ -80,6 +80,7 @@ SELECT ?s ?p ?o WHERE {
         try {
             result = await query(services, this.sparql)
         } catch(e) {
+            console.dir(e)
             this.errors.push(e.toString())
         }
 
