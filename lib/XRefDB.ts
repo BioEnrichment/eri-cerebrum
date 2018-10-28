@@ -13,26 +13,13 @@ const pgp = require('pg-promise')(pgpOpts)
 const prefix = 'http://enrichment.ncl.ac.uk/'
 
 
-
-const tables = {
-	'DNA': 'dna',
-	'RNA': 'rna',
-	'Protein': 'protein',
-	'SmallMolecule': 'small_molecule',
-	'Compound': 'compound',
-	'Reaction': 'reaction',
-	'ReactionParticipant': 'reaction_participant',
-	'Organism': 'organism',
-	'Evidence': 'evidence',
-	'ProteinProteinInteraction': 'protein_protein_interaction'
-}
-
-
 export default class XRefDB {
 
 	app:CerebrumApp
 
 	db:any
+
+    tables:any
 
 	constructor(app:CerebrumApp) {
 
@@ -40,14 +27,16 @@ export default class XRefDB {
 
         let config = (app as any).config
 
+        this.tables = config.cerebrum.tables
+
 		this.db = pgp(config.cerebrum.db)
 	}
 
     async init() {
 
-        await Promise.all(Object.keys(tables).map((name) => {
+        await Promise.all(Object.keys(this.tables).map((name) => {
 
-            let tableName = tables[name]
+            let tableName = this.tables[name]
 
             return this.db.any('CREATE TABLE IF NOT EXISTS ' + tableName + ' (uri text primary key, eri text)')
 
@@ -58,7 +47,7 @@ export default class XRefDB {
 
 	async getCounts() {
 
-		let types = Object.keys(tables)
+		let types = Object.keys(this.tables)
 
 		let counts = await Promise.all(types.map((type) => {
 			return this.db.any('SELECT COUNT(1) as count FROM ' + this.typeToTable(type))
@@ -78,13 +67,13 @@ export default class XRefDB {
 
 	private typeToTable(type) {
 
-		const table = tables[type]
+		const table = this.tables[type]
 
 		if(table) {
 			return table + ''
 		}
 
-		throw new Error('Unknown type: ' + type + '; valid types are: ' + Object.keys(tables).join(', '))
+		throw new Error('Unknown type: ' + type + '; valid types are: ' + Object.keys(this.tables).join(', '))
 	}
 
 	async getERIForURIs(uris, type) {
